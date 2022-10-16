@@ -1,0 +1,29 @@
+[base]
+log_level = DEBUG
+web_base_url =
+
+[db]
+engine = mysql
+host = 127.0.0.1
+port = 3306
+user = root
+password = 123456
+name = frame_server
+
+[redis]
+rd_host = 127.0.0.1
+rd_password =
+rd_port = 6379
+base_db = 11
+constance_db = 12
+broker_db = 13
+celery_cache_db = 14
+celery_result_db = 15
+
+[cas]
+cas_server_url =
+
+[weixin]
+corp_id =
+corp_secret =
+agent_id =

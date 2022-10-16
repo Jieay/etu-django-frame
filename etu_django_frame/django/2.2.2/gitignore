@@ -1,0 +1,13 @@
+*~
+.DS_Store
+.idea/*
+logs/*.log
+*.py[cod]
+tmp/*
+*.pid
+app/migrations/0*.py
+config_dev
+config_test
+config_prod
+*.sqlite3
+data
