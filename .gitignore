@@ -2,3 +2,5 @@
 .DS_Store
 .idea/*
 *.py[cod]
+etu_django_frame.egg-info
+dist
