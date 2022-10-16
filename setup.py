@@ -21,6 +21,7 @@ setup(
     author_email="1016900854@qq.com",
     description='将PDF脚手架工具，制作成为pip安装包，以方便使用',
     long_description=long_description,
+    long_description_content_type="text/markdown",
     packages=setuptools.find_packages(),  # 包需要引用的文件夹
     # packages = setuptools.find_packages(exclude=['文件夹名字']),
     include_package_data=True,
