@@ -4,7 +4,7 @@
 # @Author  : Jieay
 # @File    : setup.py
 
-with open("README.md", "r") as fh:
+with open("DOCS.md", "r") as fh:
     long_description = fh.read()
 
 try:
@@ -31,7 +31,7 @@ setup(
     install_requires=[],
     classifiers=[
         'Intended Audience :: Developers',
-        'License :: OSI Approved :: Apache License',
+        'License :: OSI Approved :: Apache Software License',
         'Programming Language :: Python',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.6',
