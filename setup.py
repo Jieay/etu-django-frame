@@ -19,7 +19,7 @@ setup(
     version='1.1.0',  # 版本号
     author="Jieay",
     author_email="1016900854@qq.com",
-    description='将PDF脚手架工具，制作成为pip安装包，以方便使用',
+    description='将EDF脚手架工具，制作成为pip安装包，以方便使用',
     long_description=long_description,
     long_description_content_type="text/markdown",
     license='Apache License',
