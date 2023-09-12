@@ -16,7 +16,7 @@ class ManagementUtility:
     """
     Encapsulate the logic of the pdf-admin utilities.
     """
-    VERSION_LIST = ['3.2.13', '2.2.2']
+    VERSION_LIST = ['2.2.2', '3.2.13', '4.2.2']
 
     def __init__(self, argv=None):
         self.argv = argv or sys.argv[:]
@@ -29,7 +29,8 @@ class ManagementUtility:
 
     def main_help_text(self):
         """Return the script's main help text, as a string."""
-        label_name = '\n'.join(['    {}'.format(x) for x in self.version_list])
+        ver_reversed = list(reversed(self.version_list))
+        label_name = '\n'.join(['    {}'.format(x) for x in ver_reversed])
         usage = [
             "",
             "usage: edf-admin label project_name",
@@ -178,6 +179,9 @@ class ManagementUtility:
             self.change_222(project_name, tmp_data)
 
         elif label == '3.2.13':
+            self.change_3213(project_name, tmp_data)
+
+        elif label == '4.2.2':
             self.change_3213(project_name, tmp_data)
 
     def create_frame(self, label, project_name):
