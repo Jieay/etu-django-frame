@@ -1,4 +1,4 @@
-FROM jieay/python-comm:3.6
+FROM jieay/python-comm:3.9
 ENV PYTHONUNBUFFERED 1
 
 WORKDIR /code
