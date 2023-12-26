@@ -9,7 +9,7 @@
 
 
 ### 安装方法
-    通过pip命令进行安装：pip install etu-django-frame==1.0.0
+    通过pip命令进行安装：pip install etu-django-frame
 
 
 ### 参数说明
@@ -17,13 +17,14 @@
 usage: edf-admin label project_name
 labels:
     3.2.13
+    4.2.2
 ```
 
 
 ### 使用方法
 ```shell
 cd ~
-edf-admin 3.2.13 demo_01
+edf-admin 4.2.2 demo_01
 ```
 
 

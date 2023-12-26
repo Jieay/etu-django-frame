@@ -16,7 +16,7 @@ import setuptools
 
 setup(
     name='etu-django-frame',  # 包的名字
-    version='1.3.0',  # 版本号
+    version='1.3.1',  # 版本号
     author="Jieay",
     author_email="1016900854@qq.com",
     description='将EDF脚手架工具，制作成为pip安装包，以方便使用',
