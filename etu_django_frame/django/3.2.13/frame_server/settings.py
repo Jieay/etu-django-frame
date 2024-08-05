@@ -76,6 +76,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    # 跨域中间件
+    'corsheaders.middleware.CorsMiddleware',
     # 自定义全局请求中间件
     'utils.comm.middleware.GlobalRequestMiddleware.GlobalRequestMiddleware',
 ]
