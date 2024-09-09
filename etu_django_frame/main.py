@@ -16,7 +16,7 @@ class ManagementUtility:
     """
     Encapsulate the logic of the pdf-admin utilities.
     """
-    VERSION_LIST = ['2.2.2', '3.2.13', '4.2.2']
+    VERSION_LIST = ['2.2.2', '3.2.13', '4.2.2', '4.2.16']
 
     def __init__(self, argv=None):
         self.argv = argv or sys.argv[:]
@@ -178,10 +178,7 @@ class ManagementUtility:
         if label == '2.2.2':
             self.change_222(project_name, tmp_data)
 
-        elif label == '3.2.13':
-            self.change_3213(project_name, tmp_data)
-
-        elif label == '4.2.2':
+        elif label in ['3.2.13', '4.2.2', '4.2.16']:
             self.change_3213(project_name, tmp_data)
 
     def create_frame(self, label, project_name):

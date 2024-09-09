@@ -7,4 +7,4 @@ import django
 django.setup()
 
 # 注册异步任务
-from .demo_test import *
+# from .demo_test import *
