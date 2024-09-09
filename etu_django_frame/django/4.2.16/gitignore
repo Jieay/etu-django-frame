@@ -1,0 +1,8 @@
+*~
+.DS_Store
+.idea/*
+*.py[cod]
+*.pid
+data/
+config_dev
+db.sqlite3

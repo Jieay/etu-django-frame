@@ -5,7 +5,7 @@
 
 
 ## 说明
-    本包名字为 etu-django-frame , 它主要是EDF脚手架工具的封装。其中支持的Django框架版本：2.2.2、3.2.13、4.2.2
+    本包名字为 etu-django-frame , 它主要是EDF脚手架工具的封装。其中支持的Django框架版本：2.2.2、3.2.13、4.2.2、4.2.16
 
 
 ### 安装方法
@@ -18,13 +18,14 @@ usage: edf-admin label project_name
 labels:
     3.2.13
     4.2.2
+    4.2.16
 ```
 
 
 ### 使用方法
 ```shell
 cd ~
-edf-admin 4.2.2 demo_01
+edf-admin 4.2.16 demo_01
 ```
 
 

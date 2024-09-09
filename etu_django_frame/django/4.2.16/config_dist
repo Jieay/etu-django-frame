@@ -1,0 +1,35 @@
+# 基础配置
+[base]
+# 日志级别：DEBUG | INFO
+log_level = DEBUG
+# 接口范围域名白名单: xxx.com,127.0.0.1
+whitelist_hosts =
+# 跨域白名单: xxx.com,http://127.0.0.1:8005
+cors_origin_whitelist =
+
+# 数据库配置
+[db]
+# 数据引擎：sqlite | mysql
+engine = sqlite
+host = 127.0.0.1
+port = 3306
+user = root
+password = 123456
+name = frame_server
+
+# Redis配置
+[redis]
+rd_host = 127.0.0.1
+rd_password =
+rd_port = 6379
+base_db = 11
+constance_db = 12
+broker_db = 13
+celery_cache_db = 14
+celery_result_db = 15
+
+[cas]
+# 单点登录地址
+cas_server_url =
+
+
