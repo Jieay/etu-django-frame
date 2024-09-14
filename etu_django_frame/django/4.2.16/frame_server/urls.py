@@ -16,6 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, re_path, include
+from django.conf import settings
 
 from app.views.cas_admin import views as cas_views
 from app.views.comm.health_view import GetHealthCheckView
@@ -28,6 +29,16 @@ urlpatterns = [
     path('logout/', cas_views.CasLogoutView.as_view(), name='cas_ng_logout'),
     path('health/check', GetHealthCheckView.as_view()),
 ]
+
+if settings.DEBUG is True:
+    from drf_spectacular.views import SpectacularJSONAPIView, SpectacularRedocView, SpectacularSwaggerView
+    urlpatterns += [
+        path('swagger/json/', SpectacularJSONAPIView.as_view(), name='schema'),
+        # Optional UI:
+        path('swagger/ui/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
+        path('swagger/redoc/', SpectacularRedocView.as_view(url_name='schema'), name='redoc'),
+        # YOUR PATTERNS
+    ]
 
 urlpatterns += [
     re_path(r'^api/', include('app.urls')),

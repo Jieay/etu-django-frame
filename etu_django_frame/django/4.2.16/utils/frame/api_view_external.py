@@ -7,7 +7,8 @@ import copy
 from rest_framework import status as rest_status
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.authentication import SessionAuthentication, BasicAuthentication, TokenAuthentication
+# from rest_framework.authentication import SessionAuthentication, BasicAuthentication
+from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from django.http import JsonResponse
 from django.db.models import Q
@@ -38,10 +39,11 @@ http_error_codes = [400]
 
 class BaseApiView(APIView):
     """标准接口基类"""
+
     @classmethod
     def as_v1_view(cls):
         v3_view = cls.as_view()
-        
+
         def view(request, *args, **kwargs):
             response = v3_view(request, *args, **kwargs)
             if isinstance(response, BaseResponse):
@@ -66,6 +68,7 @@ class BaseApiView(APIView):
                 return JsonResponse(data=data, status=status, safe=False)
             else:
                 return response
+
         if hasattr(v3_view, 'csrf_exempt'):
             view.csrf_exempt = getattr(v3_view, 'csrf_exempt')
         return view
@@ -73,7 +76,9 @@ class BaseApiView(APIView):
 
 class BaseAdminApiView(BaseApiView):
     """认证接口基类"""
-    authentication_classes = (TokenAuthentication, SessionAuthentication, BasicAuthentication)
+    # 接口认证类注册
+    # authentication_classes = (TokenAuthentication, SessionAuthentication, BasicAuthentication)
+    authentication_classes = (TokenAuthentication,)
     permission_classes = (IsAuthenticated,)
 
 

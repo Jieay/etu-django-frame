@@ -17,6 +17,9 @@ config = configparser.ConfigParser()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+PROJECT_NAME = 'frame_server ms'
+PROJECT_VERSION = '1.0.0'
+
 RESOURCE_ROOT = os.path.join(BASE_DIR, 'data')
 
 ENVIRONMENT = os.environ.get('SERVER_CFG', 'dist')
@@ -34,6 +37,11 @@ if ENVIRONMENT in ['dev', 'dist']:
     DEBUG = True
 else:
     DEBUG = False
+
+# cookie session_key 过期时间
+COOKIE_SESSION_KEY_EXPIRE_MINUTES: int = int(
+    os.environ.get('COOKIE_SESSION_KEY_EXPIRE_MINUTES') or config['base'].get('cookie_session_key_expire_minutes')
+)
 
 # 自定义白名单访问域名，格式：.xxx.com.cn,127.0.0.1
 CUSTOM_WHITELIST_HOSTS = os.environ.get('WHITELIST_HOSTS') or config['base'].get('whitelist_hosts')
@@ -65,6 +73,8 @@ INSTALLED_APPS = [
     'django_celery_beat',
     'django_celery_results',
     'etu_django_mcmt',
+    'drf_spectacular',
+    'drf_spectacular_sidecar',
     'app',
 ]
 
@@ -333,6 +343,8 @@ REST_FRAMEWORK = {
         # 'django_cas_ng.backends.CASBackend',
         'django.contrib.auth.backends.ModelBackend',
     ),
+    # 生成接口文档
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 }
 
 
@@ -371,4 +383,15 @@ CAS_AUTO_CREATE_USERS = True
 MEDIA_ROOT = RESOURCE_ROOT
 MEDIA_URL = '/media/'
 
+# 自动生成接口文档配置
+SPECTACULAR_SETTINGS = {
+    'TITLE': PROJECT_NAME,
+    'DESCRIPTION': PROJECT_NAME,
+    'VERSION': PROJECT_VERSION,
+    'SERVE_INCLUDE_SCHEMA': False,
+    # OTHER SETTINGS
+    'SWAGGER_UI_DIST': 'SIDECAR',  # shorthand to use the sidecar instead
+    'SWAGGER_UI_FAVICON_HREF': 'SIDECAR',
+    'REDOC_DIST': 'SIDECAR',
+}
 

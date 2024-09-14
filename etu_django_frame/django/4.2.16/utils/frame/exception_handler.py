@@ -11,7 +11,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-def CustomBaseExceptionHandler(exc, context):
+def custom_base_exception_handler(exc, context):
     """自定义异常返回"""
 
     detail_msg = str(exc)

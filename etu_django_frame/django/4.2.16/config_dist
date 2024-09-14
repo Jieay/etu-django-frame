@@ -2,6 +2,8 @@
 [base]
 # 日志级别：DEBUG | INFO
 log_level = DEBUG
+# 60 minutes * 24 hours * 15 days = 21600 minutes
+cookie_session_key_expire_minutes = 21600
 # 接口范围域名白名单: xxx.com,127.0.0.1
 whitelist_hosts =
 # 跨域白名单: xxx.com,http://127.0.0.1:8005

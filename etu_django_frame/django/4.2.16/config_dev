@@ -1,6 +1,8 @@
 [base]
 log_level = DEBUG
+cookie_session_key_expire_minutes = 21600
 whitelist_hosts =
+cors_origin_whitelist =
 
 [db]
 engine = sqlite

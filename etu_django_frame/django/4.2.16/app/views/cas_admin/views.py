@@ -3,7 +3,6 @@
 # @Time    : 2019-10-10 17:32
 # @Author  : Jieay
 # @File    : views.py
-# from __future__ import absolute_import, unicode_literals
 from importlib import import_module
 from django.conf import settings
 from django.contrib import messages
@@ -31,6 +30,7 @@ SessionStore = import_module(settings.SESSION_ENGINE).SessionStore
 
 from django_cas_ng.views import LoginView, LogoutView
 from rest_framework.authtoken.models import Token
+from utils.comm.commapi import get_base64_encoded
 
 import logging
 
@@ -88,6 +88,23 @@ def clean_sessions(client, request):
             pass
 
 
+def get_session_key_expire():
+    try:
+        session_key_expire = settings.COOKIE_SESSION_KEY_EXPIRE_MINUTES * 60
+    except Exception as e:
+        logger.error(e)
+        session_key_expire = 60 * 60 * 24 * 30
+    return session_key_expire
+
+
+def set_response_session_key(response, token):
+    sk_expire = get_session_key_expire()
+    session_key = get_base64_encoded(token)
+    response.set_cookie(key='session_key', value=session_key, max_age=sk_expire, expires=sk_expire)
+    logger.debug(f'登录成功, session_key: {session_key}')
+    return response
+
+
 class CasLoginView(LoginView):
     """单点登录"""
 
@@ -106,8 +123,8 @@ class CasLoginView(LoginView):
         if token_obj.exists():
             token = token_obj[0].key
         else:
-            token = 'aaaaa'
-        logger.info('Token: {}'.format(token))
+            token = 'aaaa-bbbb-cccc'
+        logger.debug('Token: {}'.format(token))
         # session_key = request.session.session_key
         # logger.info('Login request.COOKIES: {}'.format(request.COOKIES))
         # logger.info('Login request.session: {}'.format(request.session))
@@ -124,10 +141,9 @@ class CasLoginView(LoginView):
         # logger.info('next_page: {}'.format(new_next_page))
         # return HttpResponseRedirect(new_next_page)
 
-        # 设置重定向 cookie 信息，将 token 信息放在 cookie 中
+        # 设置重定向 cookie 信息，将 token base64 信息放在 cookie 中
         response = HttpResponseRedirect(next_page)
-        response.set_cookie('token', token)
-        return response
+        return set_response_session_key(response=response, token=token)
 
     def post(self, request: HttpRequest) -> HttpResponse:
         next_page = clean_next_page(request, request.POST.get('next', settings.CAS_REDIRECT_URL))
@@ -175,7 +191,9 @@ class CasLoginView(LoginView):
         if not ticket:
             if settings.CAS_STORE_NEXT:
                 request.session['CASNEXT'] = next_page
-            return HttpResponseRedirect(client.get_login_url())
+            redirect_login_url = client.get_login_url()
+            logger.info(f'CAS Login: {redirect_login_url}')
+            return HttpResponseRedirect(redirect_login_url)
 
         user = authenticate(ticket=ticket,
                             service=service_url,
@@ -228,7 +246,7 @@ class CasLoginView(LoginView):
                 name = user.get_username()
                 message = settings.CAS_LOGIN_MSG % name
                 messages.success(request, message)
-
+            logger.debug(f'CAS login successful. next_page: {next_page}')
             return self.successful_login(request=request, next_page=next_page)
 
         if settings.CAS_RETRY_LOGIN or required:
@@ -277,7 +295,7 @@ class CasLogoutView(LogoutView):
         logger.info('Clean current session ProxyGrantingTicket and SessionTicket and Token.')
         ProxyGrantingTicket.objects.filter(session_key=session_key).delete()
         SessionTicket.objects.filter(session_key=session_key).delete()
-        logger.info('Logout session_key: {}'.format(session_key))
+        logger.info('Logout delete session_key: {}'.format(session_key))
 
         if user.is_authenticated:
             token_obj = Token.objects.filter(user=user)
@@ -285,7 +303,7 @@ class CasLogoutView(LogoutView):
             if token_obj:
                 token = token_obj[0].key
                 token_obj.delete()
-            logger.info('Logout token: {}'.format(token))
+            logger.info('Logout delete token: {}'.format(token))
         auth_logout(request)
 
         next_page = next_page or get_redirect_url(request)
@@ -299,8 +317,13 @@ class CasLogoutView(LogoutView):
                 (protocol, host, next_page, '', '', ''),
             )
             client = get_cas_client(request=request)
-            return HttpResponseRedirect(client.get_logout_url(redirect_url))
+            response = HttpResponseRedirect(client.get_logout_url(redirect_url))
+            response.delete_cookie('session_key')
+            return response
 
         # This is in most cases pointless if not CAS_RENEW is set. The user will
         # simply be logged in again on next request requiring authorization.
-        return HttpResponseRedirect(next_page)
+
+        response = HttpResponseRedirect(next_page)
+        response.delete_cookie('session_key')
+        return response

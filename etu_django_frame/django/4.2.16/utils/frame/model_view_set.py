@@ -7,7 +7,8 @@ from rest_framework import status
 from rest_framework import viewsets
 from rest_framework.serializers import Serializer
 from rest_framework.response import Response
-from rest_framework.authentication import SessionAuthentication, BasicAuthentication, TokenAuthentication
+# from rest_framework.authentication import BasicAuthentication
+from rest_framework.authentication import SessionAuthentication, TokenAuthentication
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from app.models.common.fake_model import FakeModel
 from app.serializers.common.fake_serializer import FakeSerializer
@@ -45,13 +46,17 @@ class CustomBaseSessionAuthentication(SessionAuthentication):
 
 class BaseModelViewSet(viewsets.ModelViewSet):
     """ModelViewSet认证基类"""
-    authentication_classes = (TokenAuthentication, CustomBaseSessionAuthentication, BasicAuthentication)
+    # 接口认证类注册
+    # authentication_classes = (TokenAuthentication, CustomBaseSessionAuthentication, BasicAuthentication)
+    authentication_classes = (TokenAuthentication,)
     permission_classes = (IsAuthenticated,)
 
 
 class BaseReadOnlyModelViewSet(viewsets.ReadOnlyModelViewSet):
     """ModelViewSet只读认证基类"""
-    authentication_classes = (TokenAuthentication, CustomBaseSessionAuthentication, BasicAuthentication)
+    # 接口认证类注册
+    # authentication_classes = (TokenAuthentication, CustomBaseSessionAuthentication, BasicAuthentication)
+    authentication_classes = (TokenAuthentication,)
     permission_classes = (IsAuthenticated,)
 
 

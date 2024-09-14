@@ -10,6 +10,7 @@ import sys
 import json
 import copy
 import time
+import base64
 import string
 import random
 import uuid
@@ -868,8 +869,88 @@ def get_cur_host_mac_addr():
 def is_ip(ip_str):
     """检查字符串是否是IP"""
     ip_str = str(ip_str)
-    p = re.compile('^((25[0-5]|2[0-4]\d|[01]?\d\d?)\.){3}(25[0-5]|2[0-4]\d|[01]?\d\d?)$')
+    p = re.compile(r'^((25[0-5]|2[0-4]\d|[01]?\d\d?)\.){3}(25[0-5]|2[0-4]\d|[01]?\d\d?)$')
     if p.match(ip_str):
         return True
     else:
         return False
+
+
+def datetime_str_to_str(dt_str):
+    """
+    将指定时间字符串转化标准格式
+    Args:
+        dt_str: 2024-08-18T19:59:00.194116
+
+    Returns: `str` 2024-08-18 19:59:00
+    """
+    datetime_obj = datetime.datetime.strptime(dt_str, '%Y-%m-%dT%H:%M:%S.%f')
+    return datetime_obj.strftime('%Y-%m-%d %H:%M:%S')
+
+
+def bytes_to_str(data):
+    """
+    将 bytes 类型转化成字符串
+    Args:
+        data: 数据
+
+    Returns: `str`
+    """
+    if isinstance(data, bytes):
+        return data.decode(encoding='utf-8')
+    return data
+
+
+def str_to_bytes(data):
+    """
+    将字符串转化成 bytes 类型
+    Args:
+        data: 数据
+
+    Returns: `bytes`
+    """
+    if isinstance(data, str):
+        return data.encode(encoding='utf-8')
+    return data
+
+
+def get_base64_encoded(data, out_str=True):
+    """
+    获取 Base64 编码
+    Args:
+        data: `str`|`bytes` 需要编码字符
+        out_str: `bool` 是否输出字符串
+
+    Returns: `str`|`bytes`
+    """
+    if isinstance(data, bytes):
+        _data = data
+    else:
+        # 将字符串编码为字节
+        _data = data.encode('utf-8')
+    # 编码为 Base64
+    encoded_data = base64.b64encode(_data)
+    if out_str is True:
+        return encoded_data.decode('utf-8')
+    return encoded_data
+
+
+def get_base64_decode(encoded_data, out_str=True):
+    """
+    获取 Base64 解码
+    Args:
+        encoded_data: `str`|`bytes` Base64编码字符
+        out_str: `bool` 是否输出字符串
+
+    Returns: `str`|`bytes`
+    """
+    if isinstance(encoded_data, bytes):
+        data = encoded_data
+    else:
+        # 将字符串编码为字节
+        data = encoded_data.encode('utf-8')
+    # 解码 Base64 数据
+    decoded_data = base64.b64decode(data)
+    if out_str is True:
+        return decoded_data.decode('utf-8')
+    return decoded_data
